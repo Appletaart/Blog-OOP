@@ -9,13 +9,13 @@ Tablename: user, photo, comment<br>
 <p>
 - index.php has shown all the photo of the user <br>
 - click at the photo, anyone could be possible to comment<br>
-<li>getstudentinfo.php</li>
-- show all the information form the database<br>
+<li>back-end part index.php</li>
+<br>
 </p>
 <br>
 <img src="admin/jpeg/2.jpg"><br>
-<img src="admin/jpeg/1.jpg"><br>
 <img src="admin/jpeg/3.jpg"><br>
+<img src="admin/jpeg/1.jpg"><br>
 <img src="admin/jpeg/4.jpg"><br>
 <img src="admin/jpeg/5.jpg"><br>
 <img src="admin/jpeg/6.jpg"><br>
