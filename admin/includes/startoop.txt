@@ -1,0 +1,736 @@
+When we are getting start for website with the database
+
+in the first page index.php **
+
+<?php include("includes/header.php");?>
+
+<?php include("includes/sidebar.php");?>
+
+<?php include("includes/content-top.php");?>
+
+<?php include("includes/content.php");?>
+
+<?php include("includes/footer.php");?>
+
+**
+
+   all the include file that seperate each section on the index page.
+
+   - header
+   - sidebar (make new files as user/create/delete)
+   - content-top
+   - content
+   - footer
+
+for make a database go to mysql
+
+for link all the files together for using the database.
+
+create new file config.php **
+
+<?php
+define('DB_HOST','locolhost'); // DB_HOST ‘localhost:3308’ change by the localhost we use as Server: MySQL:3308 in mac doesn't work.
+define('DB_USER','root');
+define('DB_PASS',''); // should put the password 'root'
+define('DB_NAME','dbblogoop');
+?>
+**
+
+and create new file init.php
+for connect the database
+
+**
+
+<?php
+include("config.php");
+?>
+
+**
+
+and add text at above the page header.php
+
+**
+<?php include("init.php"); ?>
+**
+
+the reason is when we start the page index.php
+that will start the header first and it would link to the config.php to the database
+
+
+/* php-class
+
+Maak in admin/includes een nieuwe class aan, namelijk Database.php.
+Wanneer we een class aanmaken zal de naam altijd starten met een hoofdletter. Dit is anders dan bij een php file, een gewone php file zal altijd een naam hebben die bestaat uit kleine letters.
+Dit zorgt ervoor dat we een goed overzicht kunnen bewaren over de bestanden en snel zien wat een Class is en wat een gewone php file is.
+
+Wat is het verschil tussen include en require?
+Include:
+Deze probeert op de webserver het proces toch verder te verwerken ook al is het bestand die het zoekt fusisch niet aanwezig op de webserver.
+
+Require:
+Deze stopt het proces als het bestand niet beschikbaar zou zijn.
+
+Once:
+Dit werkt zowel bij include_once als require_once. Hiermee vermijden we dat het bestand meer dan 1 keer kan worden opgevraagd.
+
+*/
+
+*** Class Database aanmaken
+
+De class Database bevat een public variabele $connection. Public zorgt ervoor dat de variabele ook buiten de class aanspreekbaar is.
+
+Methode open_db_connection
+De class Database krijgt tevens een methode (functie) waarin we de built-in functie (ingebouwde functie) mysqli_connect aanspreken, die de variabelen bevat om een connectie te kunnen maken met onze database dbblogoop.
+
+Merk op dat het keyword $this slaat op de class Database ZELF.
+
+We testen ook of er een error wordt gegenereerd door phpmyadmin en geven in dat geval een error terug op het scherm door gebruik te maken van mysqli_error.
+
+De standaard constructor van de class Database is function __construct en voert automatisch alles van code uit die hier staat, telkens de class wordt aangeroepen. We willen namelijk een automatische opening van de connectie open_db_connection() die zorgt voor de connectie met onze database.
+
+Class Database includen in init.php
+
+Testen van de connectie
+Voeg volgende code toe aan content.php net onder de titel ‘Dashboard’ en test of je connectie kan maken met je database. Als alles goed gaat zou je de tekst “ok connectie gemaakt met de database” op je scherm moeten zien staan.
+
+
+            <h2>check</h2>
+            <hr>
+            <?php if($database->connection){
+                echo "ok connectie gemaakt met de database";
+            } ?>
+
+
+*** Methodes voor uitvoeren van queries
+
+In het volgende filmpje komen de methodes aan bod die binnen de Class Database die gebruikt zullen worden voor het uitvoeren van queries.
+
+Deze methodes maken gebruik van 2 parameters: de connectie zelf en de sql string.
+
+De functie real_escape_string zorgt ervoor dat vreemde karakters uit de sql queries worden verwijderd. Dit vermijdt o.a. SQL INJECTIONS.
+
+
+Tip:
+Als je code niet mooi meer uitgelijnd staat, gebruik dan even volgende toetsencombinatie en je code zal weer mooi uitgelijnd staan:
+
+CTRL + ALT + L
+
+Opdracht:
+Voeg enkele users handmatig toe in de database
+
+Queries testen
+We controleren of bovenstaande queries werken. Hiervoor hebben we de data nodig in de database.
+
+Pas admin/includes/content.php aan om dit te testen.
+we vragen hier de object variabele database op van de class Database, op die manier hebben we toegang tot alle methodes die we daarnet hebben geschreven.
+
+*** Class: User **** OOP (Object Oriented Programming) programmeren ****
+
+In de vorige opdracht hebben we op de procedurele manier geschreven. Maar we gaan data opvragen uit een database, in dit geval uit de tabel ‘user’ en daarvoor gaan we classes schrijven. We maken dus een object van groep users, dit noemt men OOP (Object Oriented Programming) programmeren.
+
+Opdracht
+Maak een php class bestand aan met de naam User (Let op: starten met een hoofdletter, omdat een een Class is!!!!) Maak dit bestand aan in de map ‘includes’.
+
+We willen een query uitvoeren voor al onze users.
+Hiervoor hebben we de methode query() geschreven die we in onze database class hebben geschreven. Om deze methode te benaderen dienen we een globale dienen we een globale variabele $database te creëeren.
+
+Nu kunnen we bovenstaande testen:
+om de class user overal kenbaar te maken dienen we deze eerste toe te voegen aan init.php.
+
+MANIER 1
+In admin/includes/content.php wijzig je als volgt:
+We maken een nieuw object variabele $user van de class User().
+Vervolgens spreken we de methode find_all_users() aan van deze class waarvan het resultaat zich in de variabele $result zal bevinden.
+Deze variabele lopen we vervolgens om de data te doorlopen.
+
+Manier 2: STATIC
+De statische manier van het gebruik van classes binnen OOP is de manier om volgens de laatste standaarden te schrijven. Dit wordt zo toegepast in frameworks zoals LARAVEL.
+
+Methode find_user_by_id
+Deze methode zoekt de user in de database via zijn id
+
+We kunnen de laatste queries nog vereenvoudigen door een method te gaan schrijven die iedere query kan uitvoeren. In de voorgaande queries zag je nog de object variabele $database met de methode query() van de class database die werd aangeroepen.
+($database->query()). Wanneer we dit gedeelte in een aparte methode gieten (find_this_query) in de class user zelf dan kunnen we find_this_query binnen de andere methodes van de class aanspreken in combinatie met het self keyword (self::find_this_query()).
+
+(user_id)(put the id number in the query sql)$user = User::find_user_by_id(3)
+
+Arrays wijzigen naar objecten
+Wanneer we kijken naar admin/includes/content.php dan retourneren we steeds arrays. We willen echter geen arrays retourneren maar objecten in OOP.
+In OOP schrijven we dit bijvoorbeeld als
+$user->username
+$user->id
+$user->first-name
+…
+Daarvoor moeten we een aantal variabelen toevoegen aan de class User.
+
+Variabelen user class
+In admin/includes/content.php gaan we nu het id van een user tonen als een object.
+
+Array naar object
+Bovenstaande gaan we nog iets vereenvoudigen door ook hier een stuk ervan in een method te gieten in de user class.
+        Knip enkel het gedeelte van het object weg, laat dus de eerste lijn $result staan.
+        We plakken dit in een nieuwe functie in de user class. Wijzig alle $user variabelen naar $the_object variabele.
+        De bedoeling van deze methode is om ervoor te zorgen dat we gelijk welk veld die later nog wordt toegevoegd gemakkelijk aan de code kunnen toevoegen in deze methode.
+        Aangezien de function static is kunnen we deze als new self declareren.
+
+Function instantie
+Velen stellen zich nu de vraag: “Indien ik per tabel nu elk 100 velden heb, moet ik deze dan op die manier declareren?” Gelukkig niet, ook hiervoor gaan we code vereenvoudigen.
+
+Attributen en waarden van object inlezen en weergeven
+We gaan met een foreach door de objecten lussen (loopen).
+We spreken de methode find_all_users aan uit de class User. Daarna lussen we door alle users. Opmerking: We lussen hier door objecten! M.a.w. vooraleer we onderstaande kunnen gebruiken moeten we zowel de veldne alsook hun waarden per record uit een tabel kunnen lezen.
+
+Om bovenstaande te bereiken gaan we de functies aanpassen in de User class:
+find_all_users zorgt ervoor dat we een sql string retourneren en overdragen naar de functie find_this_query zoals je hieronder kan zien. We willen nu een array maken van objecten en dit declareren we door een variabele $the_object_array te maken.
+Deze array wordt gevuld d.m.v. een while lus. De $result_set wordt overgedragen naar $the_object_array d.m.v. onze instantie.
+Aangezien instantie een static methode (functie) is, kunnen we hier meteen het keyword self gebruiken. We geven meteen een parameter $row mee die het resultaat is van de functie instantie.
+
+Velen stellen zich nu de vraag: “Indien ik per tabel nu elk 100 velden heb, moet ik deze dan op die manier declareren?” Gelukkig niet, ook hiervoor gaan we code vereenvoudigen.
+
+Attributen en waarden van object inlezen en weergeven
+We gaan met een foreach door de objecten lussen (loopen).
+We spreken de methode find_all_users aan uit de class User. Daarna lussen we door alle users. Opmerking: We lussen hier door objecten! M.a.w. vooraleer we onderstaande kunnen gebruiken moeten we zowel de veldne alsook hun waarden per record uit een tabel kunnen lezen.
+
+Om bovenstaande te bereiken gaan we de functies aanpassen in de User class:
+find_all_users zorgt ervoor dat we een sql string retourneren en overdragen naar de functie find_this_query zoals je hieronder kan zien. We willen nu een array maken van objecten en dit declareren we door een variabele $the_object_array te maken.
+Deze array wordt gevuld d.m.v. een while lus. De $result_set wordt overgedragen naar $the_object_array d.m.v. onze instantie. Aangezien instantie een static methode (functie) is, kunnen we hier meteen het keyword self gebruiken. We geven meteen een parameter $row mee die het resultaat is van de functie instantie.
+
+Attributen waarden van object inlezen en weergeven
+
+Wanneer we kijken welke waarden er worden overgedragen door instantie ($row), dan moeten we deze even van dichterbij bekijken.
+
+We benaderen $result die als parameter is binnengekomen in bovenstaande functie als een associatieve array. D.w.z. dat sowel de sleutel (veld) en waarde lussen.
+In de foreach zie je een nieuwe methode has_the_attribute staan die we eerst van naderbij bekijken. Deze methode ontvangt uiteindelijk een parameter uit onze foreach loop. Deze parameter is $the_attribute. Het doel van de has_the_attribute methode is om na te kijken of er wel degelijk attributen in de tabel aanwezig zijn. Het attribuut is uiteindelijk de sleutel van een associatieve array.
+In ons voorbeeld: (result als $the_attribute => value)
+de variabele $object_properties wordt gevuld met alle variabelen van de User class die we bovenaan in onze User class hebben gedeclareerd. Hiervoor gebruiken we de handige built-in functie van php, nl. get_object_vars($this). De parameter $this verwijst dus naar de classname waar hij zich in bevindt, met name User.
+De uiteindelijke return vand e functie halen we op met de built-in functie array_key_exists met 2 parameters, nl. $the_attribute en $object_properties.
+Deze functie geeft een returnwaarde van true of false terug. We controleren of $the_attribute parameter aanwezig is in de array variabele $object_properties.
+Wanneer dit true is dan wordt de waarde toegekend aan het attribuut van het object. ($the_object->$the_attribute = $value)
+
+Has the attribute
+Gebruik de instantie method om 1 user te zoeken
+
+We schrijven if/else statement in itenary notation (shorthand).
+In het true gedeelte (array_shift($the_result_array)) zorgt deze functie ervoor dat het eerste item wordt uitgelezen.
+
+Short hand
+
+Autoload van alle classes
+
+Tot nu toe moesten we ieder nieuw gemaakte class ook initialiseren in init.php.
+Dit gaan we automatiseren door een autoload te schrijven die alle classes uit je project automatisch inleest, zodat we deze niet telkens in init.php dienen te schrijven.
+Opdracht:
+
+Maak een functions.php bestand aan in admin/includes.
+
+In het volgende filmpje gaan we code toevoegen aan het bestand functions.php.
+Er bestaat een mogelijkheid om classes automatisch uit een map te lezen. We gaan dus controleren of er class bestanden op een bepaalde locatie (path) staan.
+Opdracht:
+
+Zoek het path van de User class. Dit heb je straks nodig.
+
+Wanneer we nu een functie classAutoLoader schrijven zal deze het bestand User.php vinden. Daarna zorgen we ervoor dat we het bestand gaan in includen (of require_once). Je kan meerdere classes van autoloaders maken indien je wenst. De registratie van deze classes doet men met de built-in functie spl_autoload_register().
+
+Function.php
+
+Opdracht: Pas init.php aan
+
+We doen een include van functions.php (bovenaan) en zetten User.php in commentaar.
+M.a.w. functions.php zal zelf zoeken in admin/includes of de class User.php bestaat.
+Het programma zou nu dus nog steeds moeten werken. Probeer maar uit!
+
+SESSION CLASS
+
+Met deze class willen we nagaan of een user is ingelogd of niet. In het geval hij ingelogd is, gaan wij hem naar admin/index.php
+brengen in het andere geval naar de index.php van de publieke kant.
+
+
+Opdracht:
+Maak een nieuwe class ‘Session.php’ aan in de map ‘includes’
+
+Met deze class willen we nagaan of een user is ingelogd of niet. In het geval hij ingelogd is, gaan wij hem naar admin/index.php brengen in het andere geval naar de index.php van de publieke kant.
+
+Opdracht:
+Pas init.php als volgt aan:
+
+Haal ‘include(“User.php”);’ weer uit commentaar
+Voeg onderaan een include toe voor de Session.php class die je daarnet aanmaakte
+Verander ‘include’ naar ‘require_once’ voor ALLE php bestanden in init.php.
+Waarom veranderen we nu naar require_once? De require_once zal ons wel degelijk een error laten zien als er iets misloopt. De Include zal enkel een waarschuwing tonen.
+
+Verander ook in header.php de ‘include’ naar ‘require_once’
+
+Open nu admin/includes/Session.php
+
+Deze class schrijven we om sessies van users automatisch te laten starten.
+Hieronder doen we dit natuurlijk met de reeds gekende functie __construct die dankzij het maken van de nieuwe instantie ($session = new Session()) een session id start.
+
+Session.php
+
+Nu moeten we kijken of het userid wel degelijk word geset door de sessie.
+We schrijven hiervoor een functie check_the_login(), die we ook automatisch laten starten in __construct().
+We starten met de $signed_in variabele op false te zetten als default. False staat voor niet ingelogd. Wanneer de public variabele $user_id inderdaad als session variabele is geset, dan kennen we de session variabele toe aan het session object. ($this-> user_id = $SESSION[‘user_id’])
+Tegelijk zetten we de object variabele signed_in op true.
+In het else statement gedeelte gaan we de variabele gaan “ledigen” = unset, wanneer er geen session variabele wordt gevonden.
+Logisch gezien zetten we dan de variabele signed_in op false.
+
+set-user_id
+
+Login methode
+Dit is een methode die een private variabele van de class kan lezen. Die gebruiken we om na te kijken of de user is ingelogd of niet. De methode login($user) zal dus in de parameter $user een user ontvangen. Indien dit waar (true) is dan zullen we het session id toekennen aan een object variabele.
+We maken ook nog een methode is_signed_in(), deze zal enkel een boolean teruggeven (true of false).
+Later gaan we beide methodes gebruiken bij het inloggen.
+
+Logout methode
+
+In de logout methode unsetten we de session id en de user id. Daarnaast gaan we de object variabele signed_in terug op false zetten.
+
+Inloggen op includes/admin/index.php
+Opdracht:
+
+In het bootstrap theme dat we gedownload hebben zit een bestand ‘login.html’. Verander dit naar ‘login.php’. =Dit doen we omdat het bestand al klaar zou staan voor straks verder te kunnen.
+
+Wanneer we in de back-end willen inloggen, dan loggen we in op index.php. Index.php wordt o.a. samengesteld uit header.php.
+Header.php is het gedeelte die wordt geladen en per definitie de beste plaats om te testen of er een sessie actief is!
+
+Open index.php en pas als volgt aan:
+!session = het omgekeerde van een sessie, m.a.w. wanneer we geen user vinden die een sessie heeft. In dat geval voeren we de methode is_signed_in() uit. Deze user heeft dus geen toegang en wordt geredirect (doorgestuurd) naar login.php die we nog moeten aanpassen!
+
+index.php => is_signed_in
+De functie redirect($location) is geen standaard functie, maar een zelfgeschreven functie. Open functions.php en pas aan zoals in het filmpje.
+
+Opdracht:
+
+Refresh je blogoop/admin/index.php maar eens. Je zal nu de login.php pagina te zien krijgen. Als dit werkt, mag je voorlopig de code die zorgt voor de redirect op de pagina index.php in commentaar zetten, zodat je de index.php pagina nog kan zien.
+
+
+Message function
+
+Net zoals bij het procedureel programmeren schrijven we ook hier een methode om een bericht op het scherm weer te geven. Hier schrijven we momenteel enkel de code maar maken er momenteel nog geen gebruik van.
+
+De check_message methode bekijkt of er reeds een vorig bericht als sessie in het geheugen is geladen. Indien dit het geval is, gaan we die leeg maken d.m.v. unset functie. De check_message functie moet dus eigenlijk geladen worden telkens er een nieuwe sessie door de gebruiker gestart wordt. Daarom plaatsen we deze in de __construct van de session class.
+
+
+
+
+Login.php
+
+In dit deel gaan we de login pagina maken voor de back-end.
+Aanpassen van de login.php pagina
+Opdracht:
+
+    verwijder alles boven de body-tag
+    Schrijf volgende php-code op de eerste lijn in het bestand:
+
+<?php require_once("includes/header.php"); ?>
+
+    Test of de pagina nog werkt:
+    localhost/blogoop/admin/login.php
+
+We testen eerst of er een sessie actief is, als het antwoord van de functie is_signed_in() true is, dan gaan we de user doorsturen (redirecten) naar de index.php van het admin gedeelte.
+Wanneer er geen sessie actief is, dan gaan we de login.php pagina tonen aan de user. Deze pagina bestaat uit een formulier waarin de gebruiker zijn username en password kan opgeven, er staat ook een login button op deze pagina. Zorg dat deze button de naam ‘submit’ krijgt.
+Wanneer de user op de knop drukt om in te loggen, schiet de $_POST variabele in gnag en zullen een trim uitvoeren om alle overbodige tekens zoals spaties uit te filteren. Zo maken we de variabelen $username en $password.
+
+De variabele $user_found krijgt de user die uit de User class wordt gehaald d.m.v. de verify_user methode die we nog moeten schrijven. Dit komt later.
+Wanneer de user gevonden is dan kan er ingelogd worden naar de index.php pagina van het admin gedeelte. In het andere geval zal de gebruiker een foutmelding krijgen.
+
+
+Naast de php code moeten we ook nog een paar aanpassingen doen in de HTML:
+
+Opdracht:
+
+Ga op zoek naar de openingstag van from en voeg volgende code toe: method=”post”
+
+Nu moeten we nog de verify_user methode schrijven in de class User.
+
+In admind/includes/header.php zullen we ook zorgen voor outputbuffering.
+
+Opdracht:
+
+Zoek in de php manual online op waarvoor de outputbuffering gebruikt wordt.
+https://www.php.net/manual/en/function.ob-start.php
+https://notlaura.com/output-buffering/
+
+https://www.youtube.com/watch?v=V79Adzba1yA
+
+
+logout.php
+
+Aanpassingen content-top.php
+
+Zorg eerst voor de aanpassing van de link in content-top.php. Zoek met CTRL+F naar “dropdown-divider”. Hierin staat een dropdownitem met href=”#”, pas de # aan naar ‘logout.php’
+
+
+Aanpassingen footer.php
+
+Het modal scherm dat wordt geactiveerd door het data-target kan je terugvinden in footer.php. Pas ook hier de href aan naar logout.php.
+
+Opdracht:
+
+Maak een nieuw php bestand aan met de naam logout.php (geen php Class!!!!) Doe dit in de map admin.
+logout.php opstellen
+
+In de pagina admin/logout.php gaan we de header.php includen met require_once.
+We gaan de lougout methode oproepen uit de Class Session.
+En als laatste zetten we de redirect naar de pagina login.php erin.
+
+Opdracht:
+
+Probeer nu maar in te loggen en terug uit te loggen. (LET OP: in index.php staat nog een stuk code in commentaar, die moet nu terug uit commentaar gehaald worden). Dit zou nu moeten werken!
+
+Message en autoinvulling
+
+Wanneer we naar de login pagina surfen en we geven een verkeerde username of password op, dan zullen we een bericht weergeven voor de gebruiker.
+Dit doen we door echo $the_message aan de pagina toe te voegen. Open login.php voor de aanpassingen.
+
+We willen vermijden dat gebruiker al zijn velden telkens opnieuw dient in te vullen. Wanneer hij een fout heeft gemaakt in 1 veld dan moet hij enkel dat veld aanpassen. Daarom gaan we alle reeds ingevulde velden terug in het formulier oproepen ter aanpassing. Dit doen we met echo htmlentities($username) en echo htmlentities($username)
+
+Opdracht:
+
+Probeer eens in te loggen met een foute login en test of je de message te zien krijgt en of de autoinvulling werkt. Dit zou moeten werken!
+
+CREATE
+
+Het CRUD principe gaat over de basisfunctionaliteiten die we nodig hebben om te communiceren met onze database vertrekkende vanuit onze code. Ieder class of object die we hebben geschreven zal hiervan gebruik moeten maken.
+
+De create methode staat gelijk aan de INSERT INTO query die we gaan gebruiken om data toe te voegen aan onze database. We gebruiken de User class als voorbeeld.
+Opdracht
+
+Maak een nieuwe functie create() in de class User. Maak je deze functie private of public? En waarom? Stuur je antwoord door naar de docent. Verwoord goed waarom je private of public kiest. Meer info kan je vinden op onderstaande link.
+https://www.php.net/manual/en/language.oop5.visibility.php
+Vind je nog andere documentatie over public of private functions? Deel deze zeker met je medecursisten.
+
+Tip: Bij het schrijven van de queries, moet je goed op de enkele en dubbele quotes letten!
+
+Open Database.php en schrijf een functie the_insert_id(). Deze functie haalt de laatst uitgevoerde id op in een tabel die een primary key met autoincrement heeft. Zo komen we met deze functie te weten wat het laatst toegevoegde recordnummer was.
+
+UPDATE
+
+De update methode staat gelijk aan de UPDATE query die we gaan gebruiken om data te wijzigen in de database. We zullen de User class gebruiken als voorbeeld.
+Opdracht
+
+Maak een function update() in de User class. Denk goed na of het private of public moet zijn.
+
+Het is de bedoeling dat we een user automatisch gaan wijzigen in onze database.
+
+De functie mysqli_affected_rows geeft het aantal rijen terug die door de query zullen aangepast worden.
+
+Open nu content.php, hier gaan we de update methode eens uitvoeren.
+
+DELETE
+
+De delete methode staat gelijk aan de DELETE query die we gaan gebruiken om data te verwijderen uit de onze database. We gaan de User class gebruiken als voorbeeld.
+Opdracht:
+
+Maak een function delete() in de User Class.
+
+Het is de bedoeling dat we een user automatisch gaan verwijderen in onze database.
+
+
+Open content.php
+Opdracht:
+
+Test dit nu door te surfen naar admin/index.php. Wanneer je niet ingelogd bent, moet je dit eerst doen om de content.php pagina te laten uitvoeren. Controleer nu je database in de phpMyAdmin. De user werd verwijderd!
+
+
+Wat is abstraction van code?
+
+Eigenlijk nemen we een groot stuk code, die we verkleinen maar bijgevolg de efficiëntie ervan vergroten in onze code.
+
+Een voorbeeld van een methode die we kunnen vereenvoudigen is de create() methode en de update() methode die we in het vorige hoofdstuk al hebben geschreven in de User class.
+Op dit ogenblik is de create methode alleen maar in staat om telkens weer dezelfde regel te schrijven. Je kan dit zien in de afbeelding met de code van de methode create() hieronder. Hetzelfde bij de methode update()!
+
+Dit gaan we nu vereenvoudigen:
+We gaan een methode schrijven die kijkt of er een user is (bestaat in de database). Wanneer deze user er is dan dan gaan we deze wijzigen = updaten. Wanneer deze er niet is dan gaan we de user aanmaken = createn.
+
+CRUD abstractie universele class
+
+Momenteel hebben we dus een CRUD functionaliteit voor de User class. Het zou handig zijn moesten we dezelfde code voor alle classes kunnen gebruiken. Stel je eens voor dat je tabel producten, mensen, foto’s, … heeft die elk een class zijn in je project. Dezelfde code kunnen gebruiken zou dus een ongelooflijke meerwaarde zijn voor iedere nieuwe class die je creëert.
+
+We gaan onze User class voorbereiden zodat bepaalde functies ook gebruikt kunnen worden in een andere class.
+
+abstractie_code
+https://player.vimeo.com/video/405855837?dnt=1&app_id=122963
+
+Wanneer je nu test, zal je zien dat dit nog niet werkt. We hebben namelijk geen aanpassingen gedaan in content.php (bij het oproepen van de functions zijn het nog de oude benamingen, die moeten we aanpassen) en een kleine aanpassing nog te doen in User class (bij find_by_id() heeft de parameter nog de verkeerde naam).
+Opdracht
+
+Ga op zoek naar informatie over ‘protected’. Waarom gebruiken we dit en wanneer gebruiken we dit?
+Hierbij al een handige link?
+https://www.php.net/manual/en/language.oop5.visibility.php
+Heb je info op een andere plaats gevonden, deel dit gerust met je medestudenten.
+
+https://player.vimeo.com/video/405853479?dnt=1&app_id=122963
+Opdracht
+
+Test uit of de methodes create, update, delete, read nog werken voor de class User. Dit zou nog perfect moeten werken!
+
+
+CRUD abstractie universele class
+PHP – Blog OOP CRUD abstractie universele class
+In Progress
+
+Momenteel hebben we dus een CRUD functionaliteit voor de User class. Het zou handig zijn moesten we dezelfde code voor alle classes kunnen gebruiken. Stel je eens voor dat je tabel producten, mensen, foto’s, … heeft die elk een class zijn in je project. Dezelfde code kunnen gebruiken zou dus een ongelooflijke meerwaarde zijn voor iedere nieuwe class die je creëert.
+
+We gaan onze User class voorbereiden zodat bepaalde functies ook gebruikt kunnen worden in een andere class.
+
+https://player.vimeo.com/video/405855837?dnt=1&app_id=122963
+
+Wanneer je nu test, zal je zien dat dit nog niet werkt. We hebben namelijk geen aanpassingen gedaan in content.php (bij het oproepen van de functions zijn het nog de oude benamingen, die moeten we aanpassen) en een kleine aanpassing nog te doen in User class (bij find_by_id() heeft de parameter nog de verkeerde naam).
+Opdracht
+
+Ga op zoek naar informatie over ‘protected’. Waarom gebruiken we dit en wanneer gebruiken we dit?
+Hierbij al een handige link?
+https://www.php.net/manual/en/language.oop5.visibility.php
+Heb je info op een andere plaats gevonden, deel dit gerust met je medestudenten.
+
+https://player.vimeo.com/video/405853479?dnt=1&app_id=122963
+
+Opdracht
+
+Test uit of de methodes create, update, delete, read nog werken voor de class User. Dit zou nog perfect moeten werken!
+
+
+CRUD abstractie properties
+PHP – Blog OOP CRUD abstractie properties
+In Progress
+
+Net zoals de tabelnaam kunnen we ook de properties op dezelfde manier benaderen.
+
+Wanneer we kijken naar de create method en de update method van de User.php class dan staan all properties er nog hardcoded ingegeven. Dit moeten we ook variabel maken.
+
+We gaan een associatieve array maken om te loopen tussen de velden en zijn waarden.
+
+Open User.php. we gaan een functie properties() schrijven die alle properties van de class zal inlezen.
+
+https://player.vimeo.com/video/406126916?dnt=1&app_id=122963
+
+Deze properties hebben we nu nodig binnen de CRUD
+We starten met de function create() aan te passen:
+We gebruiken de geschreven properties() functie om alle variabelen van de class in een variabele $properties te steken.
+Deze properties willen we nu gebruiken in het insert statement. Aangezien dat ieder veld in het statement apart wordt ingevoerd moeten we de $properties gaan imploden (in stukken verdelen). Bij iedere komma in de associatieve array $properties, gaan we iedere aparte key=(veldnamen) er uit halen. Dit doen we door de functie array_key($properties) te gebruiken.
+Daarbij moeten we ook nog de values van iedere key uit de associatieve array te trekken.
+
+Create()_function_properties
+Aanpassen create()
+https://player.vimeo.com/video/406175444?dnt=1&app_id=122963
+
+PROBLEEM! Wanneer we bovenstaande $sql zouden uitvoeren dan zouden we een ERROR krijgen omdat er één veld te veel met de properties is meegekomen, nl. de tabelnaam zelf.
+Dit lossen we op door alle variabelen te declareren in een aparte variabele
+
+$db_table_fields
+https://player.vimeo.com/video/406130416?dnt=1&app_id=122963
+
+In de function properties() is de get_object_vars($this) nu overbodig aangezien deze functie alle objectvariabelen uit de User class verzamelde. In een gewone array $properties gaan we nu alleen de velden van de tabel user laden.
+We doorlopen de array variabele $db_table_fields veld per veld. Met property_exists controleren we of de 2 parameters bestaan. De eerste is de class zelf, nl $this (User). De tweede is de property van de class. Indien beide aanwezig zijn in de class dan creëeren we een dynamische variabele $properties[$db_field] die de veldnaam (key) bevat.
+
+function properties aanpassen
+https://player.vimeo.com/video/406132693?dnt=1&app_id=122963
+
+Opdracht
+
+Probeer maar uit! Creëer een nieuwe user.
+Opdracht: Pas het volgende aan in de function update()
+
+We gaan alle properties van de class in een associatieve array plaatsen, nl. $properties_assoc. Deze array wordt gevuld met het veld en de value zoals de schrijfwijze van het sql statement dit verwacht, nl. “{key}='{value}'”
+
+zie function update()
+
+Het enige dat we nog vergeten zijn is de escape_string voor de values die via een insert (create) in de database worden ingevoegd.
+
+We schrijven een nieuwe methode clean_properties().
+We nemen de vorige methode: $this->properties en doorlopen zowel de key als de value. De value gaan we opschonen met de escape_string(value) en steken we telkens in de array $clean_properties.
+
+clean_properties
+https://player.vimeo.com/video/406134682?dnt=1&app_id=122963
+
+Nu moeten we enkel nog de create en update function veranderen:
+
+clean_properties_create_update
+https://player.vimeo.com/video/406135531?dnt=1&app_id=122963
+
+
+Opmaken van de parent class Db_object.php
+
+Tot nu toe stonden al onze methodes (functies) in de User.php class. Heel wat methodes kunnen dus nu al dienen voor andere toekomstige classes, zoals photo class er één zal zijn. We moeten dus alle gemeenschappelijke methodes in een basis class steken. Zo een class noemen we een parent of een base class.
+Opdracht
+
+Ga naar admin/includes en voeg een nieuwe Class toe met de naam Db_object.php. Dit zal onze parent class zijn vanaf nu!
+
+We gaan nu alle gemeenschappelijke classes uit User.php knippen en deze in de parent class db_object plakken.
+De methodes die we gaan knippen en plakken zijn:
+
+    find_all()
+    find_by_id()
+    find_this_query()
+    instantie()
+    has_the_attribute()
+    save()
+    create()
+    update()
+    delete()
+    properties()
+    clean_propertiess()
+
+De class User.php is dus zijn methodes kwijt, nu moeten we gebruik maken van overerving zodat de class User gebruik kan maken van de methodes die nu in Db_object staan. Hiervoor gaan we de parent class Db_object aanspreken in de class User. Overerving gebeurt altijd in de huidige class, in dit geval User. We breiden de class uit met de parent class (=extends)
+
+Parent Class Extends Db_object
+https://player.vimeo.com/video/406180841?dnt=1&app_id=122963
+
+Daarnaast moet Db_object ook included worden in init.php
+
+require_once("function.php");
+require_once("config.php");
+require_once("Database.php");
+require_once("Db_object.php");
+require_once("User.php");
+require_once("Session.php");
+
+PROBLEEM! Wanneer we gebruik maken van overerving dan kan je GEEN gebruik maken van STATIC method (self).
+OPLOSSING: We zullen dus alle methodes aanpassen in de parent class Db_object.php.
+Wijzig hiervoor alle methodes in Db_object.php waar het keyword self staat naar static.
+Let op: enkel in de instantie method mogen we dit niet doen, omdat deze methode verwijst naar de functie zelf.
+De OPLOSSING hiervoor noemen we STATIC LATE BINDING.
+
+Parent class
+self methods veranderen naar static methods
+https://player.vimeo.com/video/406184497?dnt=1&app_id=122963
+
+We gaan nu de code in content.php controleren of de code die daar geschreven staat juist is en testen of de users op onze pagina komen.
+
+Parent class
+Testen of de code werkt
+https://player.vimeo.com/video/406189119?dnt=1&app_id=122963
+
+Tabel photo
+Opdracht:
+
+Open je database en voeg de volgende tabel toe: photo
+6column
+	1	photo_idPrimary	int(11)	AUTO_INCREMENT Primary Primary
+	2	title	varchar(255)	utf8mb4_bin
+	3	description	text	utf8mb4_bin
+	4	filename	varchar(255)	utf8mb4_bin
+	5	type	varchar(255)	utf8mb4_bin
+	6	size	int(11)
+
+
+
+class Photo toevoegen
+PHP – Blog OOP class Photo toevoegen
+
+Opdracht
+
+Maak een class ‘Photo.php’ aan in de map admin/includes/
+We erven ook in deze class ook over van Db_object.php. Breng ook dit in orde.
+
+We voegen nu een aantal variabelen toe aan de class Photo. Let hierbij goed op de benamingen die je gegeven hebt in je database!
+
+Photos
+Variabelen toevoegen
+https://player.vimeo.com/video/406199878?dnt=1&app_id=122963
+
+
+Opdracht:
+
+Include Photo.php in het bestand init.php. Doe dit net onder de include van User.php!
+
+We testen nu even uit. Hiervoor gaan we code toevoegen aan content.php.
+
+Show_title_photos
+Toon title van alle foto's
+https://player.vimeo.com/video/406199788?dnt=1&app_id=122963
+
+Probeer nu maar uit! Surf naar admin/index.php. De titel van de eerste foto verschijnt op het scherm.
+Opdracht:
+
+Probeer nu in conten.php met CODE (zoals we een user toegevoegd hebben) om een nieuwe foto toe te voegen in de tabel photo van de database. De eigenlijke foto wordt niet opgeladen in een database (NOT DONE! Dit om vertraging te vermijden tijden het inlezen), maar wel de link naar de locatie waar de foto werd opgeladen.
+
+<?php
+            $photo = new Photo();
+            $photo->title = "SAM";
+            $photo->description = "gek man";
+            $photo->size = 15;
+
+            $photo->save();
+            ?>
+
+
+Upload path en properties
+
+We passen Photo.php aan. We voegen locatie en properties van de op te laden images toe.
+
+Upload path en properties Class Photo
+https://player.vimeo.com/video/407502987?dnt=1&app_id=122963
+
+Hierna gaan we de constanten declareren om de site root te bepalen, de locatie van de includes map en de locatie van de images map. Pas init.php hiervoor aan:
+Tip: de pad in het filmpje is voor Wamp64 server, als jij met Mamp of Xampp werkt, kan het zijn dat je pad anders is. Twijfel je? Neem contact met je docent.
+
+Site root, Includes path en images path in init,php
+https://player.vimeo.com/video/407505956?dnt=1&app_id=122963
+
+Opdracht:
+
+Wat is het verschil tussen ‘define’ en ‘defined’? Lees het na op de php manual!
+https://www.php.net/manual/en/function.define.php
+https://www.php.net/manual/en/function.defined.php
+Opdracht:
+
+Test nu uit of de constanten werken in admin/includes/content.php. Je zou de pad/paden moeten zien verschijnen wanneer je surft naar admin/index.php. Voeg daarvoor volgende code toe aan content.php: ‘echo INCLUDES_PATH’
+
+Methodes
+PHP – Blog OOP Methodes
+
+In de Photo.php class schrijven we eerst de code die onze errors zou moeten opvangen.
+
+Methode set_file CLASS PHOTO
+https://player.vimeo.com/video/407520558?dnt=1&app_id=122963
+
+Daarna schrijven we de save() method om de foto’s op te laden naar de database
+
+Methode save Class Photo
+https://player.vimeo.com/video/407524038?dnt=1&app_id=122963
+
+
+Upload
+Opdracht:
+
+Om vorige code beter te begrijpen creëeren we eerst ons upload.php bestand. Dit is een php bestand (geen class). Maak dit bestand aan onder de admin map! Zorg dat onderstaande code al in het bestand staat:
+
+<?php include("includes/header.php");?>
+
+<?php include("includes/sidebar.php");?>
+
+<?php include("includes/content-top.php");?>
+
+<?php include("includes/footer.php");?>
+
+We gaan nu deze pagina opmaken:
+We starten met de HTML toe te voegen:
+HTML INVOEGEN UPLOAD.PHP
+https://player.vimeo.com/video/407562600?dnt=1&app_id=122963
+
+Daarna gaan we de PHP code toevoegen:
+
+https://player.vimeo.com/video/407567854?dnt=1&app_id=122963
+
+
+visibility
+public สามารถใช้ attribute ได้ทุกที่
+private สามารถเรียกใช้ attribute ได้เฉพาะในคลาสของตัวเอง ที่เราตั้งค่าไว้
+protected สามารถเรียกใช้ attribute ได้จากในคลาส และคลาสแม่ที่ได้ตั้งไว้ class name extends classแม่
+
+
+__construct() เป็นการประกาศฟังก์ชั่นอัตโนมัติ เพื่อเรียกใช้งานตัวเดิมๆที่เราใช้บ่อยๆ เช่น
+
+public function __construct(){
+    echo "run->";
+}
+
+ผลลับที่ได้ จะปรากฎข้อความ run-> ขึ้นมาโดยเราไม่จำเป็นต้องเรียนตัวประกาศใดๆเลย
+
+public function __destruct(){
+    echo "<-complate";
+} // จะทำงานเพื่อจบคลาสและเมทอตที่เราเลือกแล้ว
+
+
