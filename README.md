@@ -7,12 +7,10 @@ The project has 2 part. (front-end/back-end)
 The Database name: dbblogoop.<br>
 Tablename: user, photo, comment<br>
 <p>
-- index.php has shown all the photo of the user <br>
+<li>index.php has shown all the photo of the user </li>
 - click at the photo, anyone could be possible to comment<br>
 <li>back-end part index.php</li>
-<br>
 </p>
-<br>
 <img src="admin/jpeg/2.jpg"><br>
 <img src="admin/jpeg/3.jpg"><br>
 <img src="admin/jpeg/1.jpg"><br>
