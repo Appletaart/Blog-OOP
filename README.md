@@ -1,5 +1,5 @@
 # Blog-OOP
-Project Object Oriented PHPPHP (Practice)
+Project Object Oriented PHP (Practice)
 <h2>Project from PHP with database mySQL.</h2>
 This project propose to learn to write Object Oriented PHP<br>
 The project has 2 part. (front-end/back-end)
