@@ -6,22 +6,20 @@ The project has 2 part. (front-end/back-end)
 <p>
 The Database name: dbblogoop.<br>
 Tablename: user, photo, comment<br>
-
-<h3><li>main pages is addstudent.php</li></h3>
 <p>
-- insert a student information in to the database.<br>
-- search bar to search from student first name and last name<br>
+- index.php has shown all the photo of the user <br>
+- click at the photo, anyone could be possible to comment<br>
 <li>getstudentinfo.php</li>
 - show all the information form the database<br>
 </p>
 <br>
-<img src="admin/jpg/2.jpg"><br>
-<img src="admin/jpg/1.jpg"><br>
-<img src="admin/jpg/3.jpg"><br>
-<img src="admin/jpg/4.jpg"><br>
-<img src="admin/jpg/5.jpg"><br>
-<img src="admin/jpg/6.jpg"><br>
-<img src="admin/jpg/7.jpg"><br>
-<img src="admin/jpg/8.jpg"><br>
+<img src="admin/jpeg/2.jpg"><br>
+<img src="admin/jpeg/1.jpg"><br>
+<img src="admin/jpeg/3.jpg"><br>
+<img src="admin/jpeg/4.jpg"><br>
+<img src="admin/jpeg/5.jpg"><br>
+<img src="admin/jpeg/6.jpg"><br>
+<img src="admin/jpeg/7.jpg"><br>
+<img src="admin/jpeg/8.jpg"><br>
 
 
