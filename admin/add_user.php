@@ -1,9 +1,7 @@
 <?php include("includes/header.php");
-
-    if(!$session->is_signed_in()){
-        redirect_to("login.php");
-
-    }else{ redirect_to("add_user.php");}
+if(!$session->is_signed_in()){
+    redirect_to("login.php");
+}
 ?>
 
 <?php include("includes/sidebar.php");?>
@@ -25,6 +23,7 @@
                 $user->password = $_POST['password'];
                 $user->set_file($_FILES['file']);
                 $user->save_user_and_image();
+                redirect_to('users.php');
             }
             }
 ?>
