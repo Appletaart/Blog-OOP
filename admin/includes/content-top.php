@@ -4,7 +4,7 @@
         <?php
             $username = $_POST['username'];
             $username = $_SESSION['username'];
-            $user = User::find_by_user($username);
+            $userlogin = User::find_by_user($username);
         ?>
 
     <!-- Main Content -->
@@ -24,8 +24,8 @@
                 <!-- Nav Item - User Information -->
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo "Welcome ". $user->first_name;?></span>
-                        <img class="img-profile rounded-circle" src="<?php echo $user->image_path_and_placeholder();?>">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo "Welcome ". $userlogin->first_name;?></span>
+                        <img class="img-profile rounded-circle" src="<?php echo $userlogin->image_path_and_placeholder();?>">
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
