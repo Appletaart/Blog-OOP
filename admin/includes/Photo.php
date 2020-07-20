@@ -3,7 +3,7 @@
 class Photo extends Db_object
 {
     protected static $db_table = "photo";
-    protected static $db_table_fields = array('title', 'caption', 'description', 'filename', 'alternate_text', 'type', 'size');
+    protected static $db_table_fields = array('title', 'caption', 'description', 'filename', 'alternate_text', 'type', 'size', 'upload_on');
     // public $id; edit from table database name photo_id for using the same static function in Db_object use class $photo->id instead
     public $title;
     public $caption;

@@ -1,9 +1,16 @@
-<?php //this for looking for directory for photo map
+<?php //this for looking for directory 
+
+/*defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
+define('SITE_ROOT', $_SERVER['DOCUMENT_ROOT'] .DS. 'blogoop');
+defined('INCLUDES_PATH') ? null : define('INCLUDES_PATH', SITE_ROOT .DS. 'admin'.DS. 'includes');
+defined('IMAGES_PATH') ? null : define('IMAGES_PATH', SITE_ROOT .DS. 'admin' .DS. 'img');*/
+
+//print_r($_SERVER['DOCUMENT_ROOT']); = G:\PleskVhosts\applepanithi.com\httpdocs
+
 defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
-define('SITE_ROOT', DS. 'Applications' .DS. 'MAMP' .DS. 'htdocs' .DS. 'blogoop');
+define('SITE_ROOT', DS. 'Applications' .DS. 'MAMP' .DS. 'htdocs' .DS. 'blogoop'); //'studentweb'
 defined('INCLUDES_PATH') ? null : define('INCLUDES_PATH', SITE_ROOT .DS. 'admin'.DS. 'includes');
 defined('IMAGES_PATH') ? null : define('IMAGES_PATH', SITE_ROOT .DS. 'admin' .DS. 'img');
-
 
 require_once(INCLUDES_PATH.DS."functions.php");
 require_once(INCLUDES_PATH.DS."config.php");

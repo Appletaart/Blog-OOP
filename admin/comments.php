@@ -16,7 +16,7 @@ $comments = Comment::find_all();
     <div class="row">
         <div class="col-12">
             <h2>COMMENTS</h2>
-            <td><a href="add_comment.php" class="btn btn-primary rounded"><i class="fas fa-comments"></i>Add comment</a></td>
+            
             <table class="table table-header">
                 <thead>
                 <tr>
@@ -26,6 +26,7 @@ $comments = Comment::find_all();
                     <th>Author</th>
                     <th>body</th>
                     <th>Delete?</th>
+                    <th>Add comment</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,6 +39,8 @@ $comments = Comment::find_all();
                         <td><?php echo $comment->body; ?></td>
                         <td><a href="delete_comment.php?id=<?php echo $comment->id; ?>"
                                class="btn btn-danger rounded-0"><i class="fas fa-trash-alt"></i></a></td>
+                        <td><a href="../frontp_photo.php?id=<?php echo $photo->id; ?>"
+                               class="btn btn-danger rounded-0"><i class="fas fa-comments"></a></td>
                     </tr>
                     <!--to end foreach that has open with ":" foreach ($photos as $photo):-->
                 <?php endforeach; ?>

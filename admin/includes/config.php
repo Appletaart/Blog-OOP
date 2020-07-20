@@ -1,4 +1,13 @@
 <?php
+/*define('DB_HOST', '188.121.44.76:3306');
+define('DB_USER', 'ph20686669851');
+define('DB_PASS', '7fg8X_4x');
+define('DB_NAME', 'studentweb');*/
+/*define('DB_HOST', '188.121.44.76:3306');
+define('DB_USER', 'ph20686669851');
+define('DB_PASS', '7fg8X_4x');
+define('DB_NAME', 'studentweb');*/
+
 define('DB_HOST','localhost');
 define('DB_USER','root');
 define('DB_PASS','root');

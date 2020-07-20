@@ -17,6 +17,7 @@
     $photo->caption = $_POST['caption'];
     $photo->alternate_text = $_POST['alternate_text'];
     $photo->description = $_POST['description'];
+    $photo->upload_on = date('Y-m-d H:i:s');
     $photo->set_file($_FILES['file']);
 
     if($photo->save()) {
@@ -37,7 +38,7 @@
             <p><?php echo $message = ""; ?></p>
             <form action="upload.php" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="title">title</label>
+                    <label for="title">Title</label>
                     <input type="text" name="title" class="form-control">
                     <input type="datetime" name="upload_on" value="" hidden >
                 </div>

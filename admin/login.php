@@ -22,7 +22,6 @@ if (isset($_POST['submit'])) {
 
   $username = "";
   $password = "";
-
 }
 ?>
 
@@ -68,9 +67,6 @@ if (isset($_POST['submit'])) {
                   <hr>
                   <div class="text-center">
                     <a class="small" href="#">Forgot Password?</a>
-                  </div>
-                  <div class="text-center">
-                    <a class="small" href="#">Create an Account!</a>
                   </div>
                 </div>
               </div>

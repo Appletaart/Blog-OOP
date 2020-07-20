@@ -13,7 +13,7 @@ if(!$session->is_signed_in()){
                 $photo->caption = $_POST['caption'];
                 $photo->description = $_POST['description'];
                 $photo->alternate_text = $_POST['alternate_text'];
-                $photo->upload_on = $_POST['upload_on'];
+                $photo->upload_on = date('Y-m-d H:i:s');
                 $photo->type = $_POST['type'];
                 $photo->size = $_POST['size'];
                 $photo->save();
@@ -63,7 +63,7 @@ if(!$session->is_signed_in()){
                        <div class="inside">
                            <div class="box-inner">
                                <p class="text">
-                                   <span class="fas fa-calendar" >Uploaded on: <?php echo $photo->alternate_text; ?></span>
+                                   <span class="fas fa-calendar" >Uploaded on:<?php echo $photo->upload_on; ?></span>
                                </p>
                                <p class="text">
                                    Photo id:<span class="data"><?php echo $photo->id; ?></span>
